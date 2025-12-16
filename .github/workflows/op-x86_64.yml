@@ -42,7 +42,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         set +e
-        docker rmi `docker images -q`
+        docker rmi $(docker images -q)
         echo "Deleting files, please wait ..."
         sudo rm -rf \
           /usr/share/dotnet \
