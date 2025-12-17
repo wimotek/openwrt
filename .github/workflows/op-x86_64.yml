@@ -119,9 +119,40 @@ jobs:
       run: |
         echo -e "$(nproc) thread build."
         make -j$(nproc) V=s
+        make -j$(nproc) || make -j1 V=s
+        echo "======================="
+        echo "Space usage:"
+        echo "======================="
+        df -h
+        echo "======================="
+        du -h ./ --max-depth=1 || true  
 
     - name : Upload artifact
       uses: actions/upload-artifact@master
       with:
         name: OpenWrt
         path: openwrt/bin
+
+    - name: Upload release asset
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.RELEASE_TOKEN }}
+        file: ./artifact/firmware/*
+        release_name: date +"%Y%m%d%H%M"
+        tag: ${{ github.ref }}
+        overwrite: true
+        file_glob: true
+          
+    - name: 清理旧的workflow
+      uses: GitRML/delete-workflow-runs@main
+      with:
+          retain_days: 180
+          keep_minimum_runs: 10
+
+    - name: 删除旧的Releases
+      uses: dev-drprasad/delete-older-releases@v0.1.0
+      with:
+          keep_latest: 9
+          delete_tags: true
+      env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}5
