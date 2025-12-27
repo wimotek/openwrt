@@ -5,7 +5,7 @@
 # Youtube Channel:  
 #=================================================
 
-name: Build_x86_64
+name: Build_x64
 
 # Add a button to trigger the workflow
 on: 
