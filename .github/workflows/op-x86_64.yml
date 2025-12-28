@@ -135,9 +135,10 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
-        file: ./artifact/firmware/*
-        release_name: date +"%Y%m%d%H%M"
+        file: ./openwrt/bin/*
+        release_name: $(date +'%Y-%m-%d')
         tag: ${{ github.ref }}
+        body: "This is my release text"
         overwrite: true
         file_glob: true
           
@@ -153,4 +154,4 @@ jobs:
           keep_latest: 9
           delete_tags: true
       env:
-          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}5
+          GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
