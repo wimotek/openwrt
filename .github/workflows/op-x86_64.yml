@@ -18,7 +18,6 @@ jobs:
 
     steps:
     - name: Checkout
-      working-directory: /mnt
       uses: actions/checkout@master
 
     #- name: Free Disk Space (Ubuntu)
@@ -41,6 +40,7 @@ jobs:
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
+      working-directory: /mnt
       run: |
         set +e
         docker rmi $(docker images -q)
@@ -122,7 +122,7 @@ jobs:
         echo "======================="
         df -h
         echo "======================="
-        du -h /mnt --max-depth=1 || true  
+        du -h /mnt --max-depth=2 || true  
         echo -e "$(nproc) thread build."
         make -j$(nproc) V=s || make -j1 V=s
 
