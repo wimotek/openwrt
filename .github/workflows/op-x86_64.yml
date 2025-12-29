@@ -18,6 +18,7 @@ jobs:
 
     steps:
     - name: Checkout
+      working-directory: /mnt
       uses: actions/checkout@master
 
     #- name: Free Disk Space (Ubuntu)
