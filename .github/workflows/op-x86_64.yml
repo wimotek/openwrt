@@ -122,7 +122,7 @@ jobs:
         echo "======================="
         df -h
         echo "======================="
-        du -h ./ --max-depth=1 || true  
+        du -h /mnt --max-depth=1 || true  
         echo -e "$(nproc) thread build."
         make -j$(nproc) V=s || make -j1 V=s
 
