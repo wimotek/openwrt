@@ -132,14 +132,21 @@ jobs:
         name: OpenWrt
         path: openwrt/bin
 
+      # 获取当前时间
+    - name: Get current time
+      id: get_time
+      run: |
+         echo "timestamp=$(date -u +'%Y%m%d%H%M%S')" >> $GITHUB_OUTPUT
+      shell: bash
+        
     - name: Upload release asset
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.RELEASE_TOKEN }}
         file: ./openwrt/bin/*
-        release_name: $(date -u +'%Y%m%d%H%M%S')
+        release_name: Release-${{ steps.get_time.outputs.timestamp }}
         tag: ${{ github.ref }}
-        body: "This is my release text"
+        #body: "This is my release text"
         overwrite: true
         file_glob: true
           
