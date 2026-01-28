@@ -71,13 +71,21 @@ jobs:
         echo "======================="
         echo "空间使用情况："
         echo "======================="
-        df -h
+        df -hT
+
+    - name: Combine Disks
+      uses: easimon/maximize-build-space@master
+      with:
+        swap-size-mb: 1024
+        temp-reserve-mb: 100
+        root-reserve-mb: 1024
 
     - name: Clone source code
       env: 
         REPO_URL: https://github.com/coolsnowwolf/lede
         REPO_BRANCH: master
       run: |
+        df -hT
         git clone --depth 1 $REPO_URL -b $REPO_BRANCH openwrt
         #cd openwrt
         #echo "src-git ssrp https://github.com/fw876/helloworld.git" >> ./feeds.conf.default
