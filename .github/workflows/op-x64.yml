@@ -18,43 +18,35 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
 
-    #- name: Free Disk Space (Ubuntu)
-    #  uses: jlumbroso/free-disk-space@main
-    #  with:
+    - name: Free Disk Space (Ubuntu)
+      uses: jlumbroso/free-disk-space@main
+      with:
         # this might remove tools that are actually needed,
         # if set to "true" but frees about 6 GB
-    #    tool-cache: false
+        tool-cache: false
         
         # all of these default to true, but feel free to set to
         # "false" if necessary for your workflow
-    #    android: true
-    #    dotnet: true
-    #    haskell: true
-    #    large-packages: true
-    #    docker-images: true
-    #    swap-storage: true
+        android: true
+        dotnet: true
+        haskell: true
+        large-packages: true
+        docker-images: true
+        swap-storage: true
 
-
+    - name: Combine Disks
+      uses: easimon/maximize-build-space@master
+      with:
+        swap-size-mb: 1024
+        temp-reserve-mb: 100
+        root-reserve-mb: 1024
+        
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
         set +e
-        docker rmi $(docker images -q)
-        echo "Deleting files, please wait ..."
-        sudo rm -rf \
-          /usr/share/dotnet \
-          /usr/local/lib/android \
-          /opt/ghc \
-          /opt/hostedtoolcache/CodeQL \
-          /opt/microsoft \
-          /opt/pipx \
-          /usr/share/swift \
-          /etc/mysql \
-          /etc/php
         sudo -E apt-get -y purge azure-cli* docker* ghc* zulu* hhvm* llvm* firefox* google* dotnet* aspnetcore* powershell* openjdk* adoptopenjdk* mysql* php* mongodb* moby* snap* || true
         sudo -E apt-get update
         sudo -E apt-get -y install \
@@ -73,12 +65,8 @@ jobs:
         echo "======================="
         df -hT
 
-    - name: Combine Disks
-      uses: easimon/maximize-build-space@master
-      with:
-        swap-size-mb: 1024
-        temp-reserve-mb: 100
-        root-reserve-mb: 1024
+    - name: Checkout
+      uses: actions/checkout@master
 
     - name: Clone source code
       env: 
