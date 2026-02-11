@@ -102,7 +102,8 @@ jobs:
       env:
         CONFIG_FILE: 'x64.config'
       run: |
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE ./.config
+        cat ./.config
         chmod +x ./customize.sh && ./customize.sh
         cd openwrt && make defconfig
         
