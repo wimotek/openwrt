@@ -98,6 +98,7 @@ jobs:
         ./scripts/feeds install -a
 
     - name: Configuration Customization - Build_x86_64
+      working-directory: ./openwrt
       env:
         CONFIG_FILE: 'x64.config'
       run: |
